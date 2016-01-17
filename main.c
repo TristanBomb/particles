@@ -36,7 +36,7 @@ void handleEvents()
 	{
 		if (ev.type == SDL_Quit)
 		{
-			running = false;
+			running = 0;
 		}
 	}
 }
