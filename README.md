@@ -10,9 +10,10 @@ Particle System - The physics kind!
   * Radioactivity
 
 ## Controls
-* +/-: Edit charge
-* [/]: Edit mass
-* ;/': Edit radioactivity
+* Plus/Minus: Edit charge
+* Brackets: Edit mass
+* Semicolon/Quote: Edit radioactivity
+* Backslash: Randomize color
 * Left click: Create particle
 * Left click, drag, release: Launch particle
 * Space: Pause
