@@ -1,4 +1,4 @@
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include <stdio.h>
 int main(int argc, char** argv)
 {
@@ -7,9 +7,7 @@ int main(int argc, char** argv)
 		printf("SDL_Init failed: %s\n", SDL_GetError());
 		return -1;
 	}
-	SDL_Window* window = SDL_CreateWindow("Particles",
-												 0, 0,
-												 1366, 768);
+	SDL_Window* window = SDL_CreateWindow("Particles", 0, 0, 1366, 768, SDL_WINDOW_SHOWN);
 	if (!window)
 	{
 		printf("SDL_CreateWindow failed: %s\n", SDL_GetError());
@@ -19,11 +17,11 @@ int main(int argc, char** argv)
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (!renderer)
 	{
-		SDL_DestroyWindow();
+		SDL_DestroyWindow(window);
 		printf("SDL_CreateRenderer failed: %s\n", SDL_GetError());
 		SDL_Quit();
 		return -1;
 	}
-
 	SDL_Quit();
+	return 0;
 }
