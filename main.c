@@ -31,7 +31,14 @@ void renderGL(SDL_Window* window)
 
 void handleEvents()
 {
-
+	SDL_Event ev;
+	while (SDL_PollEvent(&ev))
+	{
+		if (ev.type == SDL_Quit)
+		{
+			running = false;
+		}
+	}
 }
 
 int main(int argc, char** argv)
@@ -41,7 +48,7 @@ int main(int argc, char** argv)
 		printf("SDL_Init failed: %s\n", SDL_GetError());
 		return -1;
 	}
-	SDL_Window* window = SDL_CreateWindow("Particles", 0, 0, 1366, 768, SDL_WINDOW_SHOWN);
+	SDL_Window* window = SDL_CreateWindow("Particles", 0, 0, 1366, 768, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 	if (!window)
 	{
 		printf("SDL_CreateWindow failed: %s\n", SDL_GetError());
