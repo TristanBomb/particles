@@ -34,7 +34,7 @@ void handleEvents()
 	SDL_Event ev;
 	while (SDL_PollEvent(&ev))
 	{
-		if (ev.type == SDL_Quit)
+		if (ev.type == SDL_QUIT)
 		{
 			running = 0;
 		}
