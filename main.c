@@ -138,6 +138,7 @@ int main(int argc, char** argv)
 		SDL_Quit();
 		return -1;
 	}
+	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 	{
 		printf("GLEW init failed: \n");
