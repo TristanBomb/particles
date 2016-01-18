@@ -4,14 +4,14 @@
 #include "SDL2/SDL_opengl.h"
 #include <stdio.h>
 
-const char* vertShader =  "#version 150"
-							"in vec2 position //position of the point to shade"
-							"void main()"
-							"{"
-							"	gl_Position = vec4(position, 0.0, 1.0);"
-							"}";
+const GLchar* vertShader =  "#version 150\n"
+							"in vec2 position //position of the point to shade\n"
+							"void main()\n"
+							"{\n"
+							"	gl_Position = vec4(position, 0.0, 1.0);\n"
+							"}\n";
 
-const char* fragShader =   "#version 150"
+const GLchar* fragShader =  "#version 150"
 							"out vec4 outColor //the color of the output pixel"
 							"void main()"
 							"{"
@@ -24,6 +24,7 @@ int mouseY = 0;
 
 GLuint makeGLShaders(vertexSource, fragmentSource)
 {
+	printf("%s\n", vertexSource);
 	//now init the vertex shader
 	GLint status; //gonna use this for both
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
