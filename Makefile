@@ -1,5 +1,5 @@
 CC=gcc
-SOURCES=main.c
+SOURCES=main.c file.c
 FLAGS=-Wall -pedantic -g
 LIBDIRS=-L/usr/lib/x86_64-linux-gnu
 INCLUDEDIRS=-I/usr/include
