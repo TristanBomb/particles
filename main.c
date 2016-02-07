@@ -62,8 +62,8 @@ int initGL()
 	//pretty much, this buffers the vertices to the
 	//GPU instead of keeping them in RAM. this is
 	//also what gets blitted to the screen
-	char* vertShader;
-	char* fragShader;
+	char vertShader[512];
+	char fragShader[512];
 	GLuint shaderProgram;
 	GLint posAttribute;
 	float vertices[] = {
@@ -78,8 +78,8 @@ int initGL()
 	glGenBuffers(1, &vbo); 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	readFile("vertexShader.glsl", vertShader, 512);
-	readFile("fragShader.glsl", fragShader, 512);
+	readFile("vertexShader.glsl", &vertShader, 512);
+	readFile("fragShader.glsl", &fragShader, 512);
 	shaderProgram = makeGLShaders(vertShader, fragShader);
 	if (!shaderProgram)
 	{
