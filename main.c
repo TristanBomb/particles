@@ -8,13 +8,34 @@ int running;
 int mouseX;
 int mouseY;
 
+int handleGLerror(const char place[])
+{
+	GLenum error;
+
+	error = glGetError();
+	if (error == GL_NO_ERROR) 
+	{
+		return 0;
+	}
+	else if (error = GL_INVALID_VALUE) 
+	{
+		printf("GL_INVALID_VALUE at %s\n", place);	
+		return 0;
+	}
+	else
+	{
+		printf("%s openGL error: %i\n", place, error);
+		return 1;
+	}
+}
+
 GLuint makeGLShaders(GLchar* vertexSource, GLchar* fragmentSource)
 {
 	//now init the vertex shader
 	GLint status; //gonna use this for both
 	GLuint vertexShader;
 	GLint vertexLength;
-	GLchar error[256];
+	GLchar errorMessage[256];
 	GLuint fragmentShader;
 	GLint fragmentLength;
 	GLuint shaderProgram;
@@ -26,8 +47,8 @@ GLuint makeGLShaders(GLchar* vertexSource, GLchar* fragmentSource)
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE)
 	{
-		glGetShaderInfoLog(vertexShader, 256, NULL, error);
-		printf("make vertex shader compile fail: %s\n", error);
+		glGetShaderInfoLog(vertexShader, 256, NULL, errorMessage);
+		printf("make vertex shader compile fail: %s\n", errorMessage);
 		return 0;
 	}
 	//now init the fragment (screenspace) shader
@@ -38,19 +59,21 @@ GLuint makeGLShaders(GLchar* vertexSource, GLchar* fragmentSource)
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
 	if (status != GL_TRUE)
 	{
-		GLchar error[256];
-		glGetShaderInfoLog(fragmentShader, 256, NULL, error);
-		printf("make vertex shader compile fail: %s\n", error);
+		glGetShaderInfoLog(fragmentShader, 256, NULL, errorMessage);
+		printf("make vertex shader compile fail: %s\n", errorMessage);
 		return 0;
 	}
+	handleGLerror("post shader compile");
 	//now, put the two into a shader program
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
+	handleGLerror("post shader attach");
 	//fragment shaders can write to weird output, but
 	//we want the default: output 0.
 	glBindFragDataLocation(shaderProgram, 0, "outColor");
 	glLinkProgram(shaderProgram);
+	handleGLerror("post shader link");
 	return shaderProgram;
 }
 
@@ -83,18 +106,17 @@ int initGL()
 	shaderProgram = makeGLShaders(vertShader, fragShader);
 	if (!shaderProgram)
 	{
-		return 0;
+		printf("shaders did not compile\n");
+		return 1;
 	}
+	handleGLerror("post shader");
 	glUseProgram(shaderProgram);
 	//now we have to link the input "position" with the actual vertex position
 	//for the vertex shader.
 	posAttribute = glGetAttribLocation(shaderProgram, "position");
 	glVertexAttribPointer(posAttribute, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(posAttribute);
-	if (glGetError() == GL_NO_ERROR) {
-		return 1; //woo we did it, we init'd openGL
-	}
-	return 0;
+	return (handleGLerror("final"));
 }
 
 void renderGL(SDL_Window* window)
@@ -158,7 +180,7 @@ int main(int argc, char** argv)
 		SDL_Quit();
 		return -1;
 	}
-	if (!initGL())
+	if (initGL() == 1)
 	{
 		printf("OpenGL init failed\n");
 		SDL_GL_DeleteContext(glContext);
