@@ -1,30 +1,32 @@
 # Particles
 Particle System - The physics kind!
 
-## Planned Mechanics
-* Add particles
-* Render particles (scale of mass 1 is 64, increased with square root)
-* Simulate:
-  * Charge
-  * Velocity
-  * Collision (collision range is half the sprite size)
-  * Radioactivity (λ = 10/radioactivity)
+## About
+This is a small little toy to simulate particles; currently, electromagnetism,
+gravity, and collision are implemented. In the future, radioactivity and
+possibly chromodynamics will be added as well. The forces are fairly accurate
+to reality, but the constants are different, as are particle masses.
 
 ## Controls
-* Plus/Minus: Edit charge
-* Brackets: Edit mass
-* Semicolon/Quote: Edit radioactivity
-* Backslash: Randomize color
-* Left click: Create particle
-* Left click, drag, release: Launch particle
-* Comma/period: Cycle through saved particles
-* Space: Pause
-* Backspace: Clear simulation
+* Click and drag: Create particle with velocity
+* Middle click, space: Create still particle
+* ~~Right click: Delete particle~~ (NYI)
+* Escape: Clear the screen
+* WASD: Pan the view
+* Numbers 1-9: Load presets
+* Backspace: Pick random color
+* Plus/minus: Increase/decrease charge
+* Brackets: Increase/decrease mass
+* Backslash: Invert mass
 
 ## Particles:
-Note: particles are not accurate to reality.
-* Proton: Mass 1, charge +1, radioactivity 0, #FF4444
-* Neutron: Mass 1, charge 0, radioactivity 1, #44FF44
-* Electron: Mass 0.1, charge -1, radioactivity 0, #44A2FF
-* Muon: Mass 0.4, charge -1, radioactivity 2, #A244FF
-* Tauon: Mass 1.6, charge -1, radioactivity 4, #FFA244
+Note: particle masses are not accurate to reality.
+1. Neutron: Mass 1, charge 0, #FFFFFF
+2. Proton: Mass 1, charge +1, #33CCFF
+3. Antiproton: Mass 1, charge -1, #FFCC33
+4. Electron: Mass 0.25, charge -1, #CCFF33
+5. Positron: Mass 0.25, charge +1, #CC33FF
+6. Neutrino: Mass 0.25, charge +1, #66FFCC
+7. Exotic (0): Mass -1, charge 0, #33FF66
+7. Exotic (+): Mass -1, charge +1, #FF6633
+7. Exotic (-): Mass -1, charge -1, #6633FF
