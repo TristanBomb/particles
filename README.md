@@ -21,6 +21,7 @@ to reality, but the constants are different, as are particle masses.
 
 ## Particles:
 Note: particle masses are not accurate to reality.
+
 1. Neutron: Mass 1, charge 0, #FFFFFF
 2. Proton: Mass 1, charge +1, #33CCFF
 3. Antiproton: Mass 1, charge -1, #FFCC33
@@ -28,5 +29,5 @@ Note: particle masses are not accurate to reality.
 5. Positron: Mass 0.25, charge +1, #CC33FF
 6. Neutrino: Mass 0.25, charge +1, #66FFCC
 7. Exotic (0): Mass -1, charge 0, #33FF66
-7. Exotic (+): Mass -1, charge +1, #FF6633
-7. Exotic (-): Mass -1, charge -1, #6633FF
+8. Exotic (+): Mass -1, charge +1, #FF6633
+9. Exotic (-): Mass -1, charge -1, #6633FF
