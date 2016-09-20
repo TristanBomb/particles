@@ -5,6 +5,7 @@ K_E = -500
 G = 5
 #DRAG = 1.0
 PAN = 10
+$pause = false
 
 $exo_72 = Gosu::Font.new(72, {:name => "./Exo2.ttf"})
 $exo_48 = Gosu::Font.new(48, {:name => "./Exo2.ttf"})
@@ -49,6 +50,7 @@ def col(a, b)
         end
     else return false end
 end
+
 class SimWindow < Gosu::Window
     def initialize
         super 1280, 720
@@ -68,10 +70,23 @@ class SimWindow < Gosu::Window
         if id == Gosu::MsLeft #Begin particle shot
             @target = [self.mouse_x, self.mouse_y]
 
-        elsif id == (Gosu::MsMiddle or Gosu::KbSpace) #Create particle in place
+        elsif id == Gosu::MsMiddle #Create particle in place
             part = Particle.new(*@set_particle)
             part.pos[0],part.pos[1] = self.mouse_x, self.mouse_y
             @particles << part
+
+        elsif id == Gosu::KbSpace
+            if $pause == true
+                $pause = false
+            else $pause = true
+            end
+
+        elsif id == Gosu::MsRight
+            @particles.each do |i|
+                d = Gosu::distance(i.pos[0], i.pos[1], self.mouse_x, self.mouse_y)
+                lim = 24 * (Math.sqrt(i.mass.abs))
+                if d < lim then @particles.delete(i) end
+            end
 
         #Presets
         elsif id == Gosu::Kb1 then @set_particle = $presets.values[0]; @set_name = $presets.keys[0]
@@ -108,6 +123,8 @@ class SimWindow < Gosu::Window
     end
 
     def update
+        if $pause == true then return end
+
         @particles.each do |i|
             if (i.pos[0].nan?) or (i.pos[1].nan?)
                 @particles.delete(i)
@@ -169,6 +186,10 @@ class SimWindow < Gosu::Window
 
         if @target != nil
             Gosu::draw_line(self.mouse_x,self.mouse_y,$colors["White"],@target[0],@target[1],$colors["White"])
+        end
+
+        if $pause == true
+            $exo_72.draw_rel("PAUSED", 640, 696, 0, 0.5, 1.0)
         end
 
         @particles.each do |i|
