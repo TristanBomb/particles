@@ -14,14 +14,14 @@ class Particle
     end
 
     def draw
-        @sign_color.alpha = 255*(1-(0.7)**(@charge/@mass).abs)
-        @@image.draw_rot(@pos[0], @pos[1], 0, 0, 0.5, 0.5, Math.sqrt(@mass.abs)/4, Math.sqrt(@mass.abs)/4, @color, :add)
-        if @mass < 0
-            @@image.draw_rot(@pos[0], @pos[1], 0, 0, 0.5, 0.5, Math.sqrt(@mass.abs)/8, Math.sqrt(@mass.abs)/8, Gosu::Color::BLACK, :default)
+        @sign_color.alpha = 255*(1-(0.7)**(@charge/@mass).abs) #Calculate the opacity of the charge symbol
+        @@image.draw_rot(@pos[0], @pos[1], 0, 0, 0.5, 0.5, Math.sqrt(@mass.abs)/4, Math.sqrt(@mass.abs)/4, @color, :add) #Draw the particle itself
+        if @mass < 0 #If the particle has negative mass, draw a black core
+            @@image.draw_rot(@pos[0], @pos[1], 0, 0, 0.5, 0.5, Math.sqrt(@mass.abs)/6, Math.sqrt(@mass.abs)/6, Gosu::Color::BLACK, :default)
         end
-        if @charge > 0
+        if @charge > 0 #If the particle has positive charge, draw a + sign
             @@plus.draw_rot(@pos[0], @pos[1], 0, 0, 0.5, 0.5, Math.sqrt(@mass.abs)/4, Math.sqrt(@mass.abs)/4, @sign_color, :add)
-        elsif @charge < 0
+        elsif @charge < 0 #If the particle has negative charge, draw a + sign
             @@minus.draw_rot(@pos[0], @pos[1], 0, 0, 0.5, 0.5, Math.sqrt(@mass.abs)/4, Math.sqrt(@mass.abs)/4, @sign_color, :add)
         end
     end
