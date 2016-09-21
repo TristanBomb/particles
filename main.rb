@@ -7,10 +7,10 @@ G = 5 #Strength of gravity
 PAN = 15 #Speed of panning
 $pause = false #Sim starts unpaused
 
-$exo_72 = Gosu::Font.new(72, {:name => "./Exo2.ttf"}) #Font definitions
-$exo_48 = Gosu::Font.new(48, {:name => "./Exo2.ttf"})
-$exo_32 = Gosu::Font.new(32, {:name => "./Exo2.ttf"})
-$exo_20 = Gosu::Font.new(20, {:name => "./Exo2.ttf"})
+$exo_72 = Gosu::Font.new(72, {:name => "assets/Exo2.ttf"}) #Font definitions
+$exo_48 = Gosu::Font.new(48, {:name => "assets/Exo2.ttf"})
+$exo_32 = Gosu::Font.new(32, {:name => "assets/Exo2.ttf"})
+$exo_20 = Gosu::Font.new(20, {:name => "assets/Exo2.ttf"})
 
 $colors = {"White" => 0xff_ffffff, "Orange" => 0xff_ffcc33, "Lime" => 0xff_ccff33, #Color definitions
         "Azure" => 0xff_33ccff, "Purple" => 0xff_cc33ff, "Mint" => 0xff_66ffcc,
@@ -55,7 +55,6 @@ class SimWindow < Gosu::Window
     def initialize
         super 1280, 720 #Set the window size
         @particles = []
-        @new_particles = []
         @col_particles = []
         @set_particle = [1.0,0.0,nil,$colors["White"],[]] #Set the default particle to "Neutron"
         @set_name = "Neutron"
@@ -135,37 +134,40 @@ class SimWindow < Gosu::Window
             if button_down?(Gosu::KbS) then i.pos[1] -= PAN end
             if button_down?(Gosu::KbD) then i.pos[0] -= PAN end
         end
-        @new_particles = @particles.clone #Copy the set of particles
-        @new_particles.each do |i|
+
+        @particles.each do |i|
             @particles.each do |j|
                 if i != j
                     k = col(i,j)
-                    if k == nil #If the particles have equal but opposite mass, delete them
-                        @new_particles.delete(i)
-                        @new_particles.delete(j)
-                    elsif k == false #If the particles are not colliding, calculate physsics
-                        f = physics(i, j) #Run physics
+                    if k != false #If the particles collide, delete them
+                        if k != nil #If the resulting particle has mass, create it
+                            @col_particles << k #Exclude the new particle from the physics calculations
+                        end
+                        @particles.delete(i)
+                        @particles.delete(j)
+                    else #If the particles are not colliding, calculate physics
+                        f = physics(i, j)
                         i.vel[0] += f[0] / i.mass #Convert force into velocity
                         i.vel[1] += f[1] / i.mass
-                    else #If the particles are colliding and the mass is not = 0, combine them
-                        @new_particles.delete(i)
-                        @new_particles.delete(j)
-                        @col_particles << k #Exclude the new particle from the physics calculations
                     end
                 end
             end
-            i.pos[0] += i.vel[0]
-            i.pos[1] += i.vel[1]
-            #i.vel[0] = i.vel[0] * DRAG
-            #i.vel[1] = i.vel[1] * DRAG
         end
 
-        @particles = @new_particles.clone #Now that the physics are done, transfer the new particles back
+        @particles.each do |i|
+            i.pos[0] += i.vel[0]
+            i.pos[1] += i.vel[1]
+        end
+
         @particles.push(*@col_particles) #Any particles from collisions are now added back into the sim
         @col_particles = [] #...and delted from the collision array
     end
 
     def draw
+        @particles.each do |i| #Draw particles
+            i.draw
+        end
+
         $exo_48.draw_rel("Particle Sim", 640, 0, 0, 0.5, 0.0) #Draw middle text
         $exo_32.draw_rel("Alpha", 640, 48, 0, 0.5, 0.0)
 
@@ -194,10 +196,6 @@ class SimWindow < Gosu::Window
 
         if $pause == true #If paused, tell the user
             $exo_72.draw_rel("PAUSED", 640, 696, 0, 0.5, 1.0)
-        end
-
-        @particles.each do |i|
-            i.draw
         end
     end
 end
