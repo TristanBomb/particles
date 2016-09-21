@@ -135,22 +135,21 @@ class SimWindow < Gosu::Window
             if button_down?(Gosu::KbD) then i.pos[0] -= PAN end
         end
 
-        @particles.each do |i|
-            @particles.each do |j|
-                if i != j
-                    k = col(i,j)
-                    if k != false #If the particles collide, delete them
-                        if k != nil #If the resulting particle has mass, create it
-                            @col_particles << k #Exclude the new particle from the physics calculations
-                        end
-                        @particles.delete(i)
-                        @particles.delete(j)
-                    else #If the particles are not colliding, calculate physics
-                        f = physics(i, j)
-                        i.vel[0] += f[0] / i.mass #Convert force into velocity
-                        i.vel[1] += f[1] / i.mass
-                    end
+        @particles.combination(2).each do |pair|
+            i,j = *pair
+            k = col(i,j)
+            if k != false #If the particles collide, delete them
+                if k != nil #If the resulting particle has mass, create it
+                    @col_particles << k #Exclude the new particle from the physics calculations
                 end
+                @particles.delete(i)
+                @particles.delete(j)
+            else #If the particles are not colliding, calculate physics
+                f = physics(i, j)
+                i.vel[0] += f[0] / i.mass #Convert force into velocity
+                i.vel[1] += f[1] / i.mass
+                j.vel[0] -= f[0] / j.mass
+                j.vel[1] -= f[1] / j.mass
             end
         end
 
