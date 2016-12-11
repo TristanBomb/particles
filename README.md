@@ -11,19 +11,6 @@ This application requires Ruby, RubyGems, and the Gosu gem.
 
 On Linux:
 
-* Install (Ruby)[# Particles
-Particle System - The physics kind!
-
-This is a small little toy to simulate particles; currently, electromagnetism,
-gravity, and collision are implemented. In the future, radioactivity and
-possibly chromodynamics will be added as well. The forces are fairly accurate
-to reality, but the constants are different, as are particle masses.
-
-## Installation
-This application requires Ruby, RubyGems, and the Gosu gem.
-
-On Linux:
-
 * Install [Ruby](https://www.ruby-lang.org/en/documentation/installation/) from
 your distribution's package manager, or from source. On Debian and Ubuntu, this
 will be `sudo apt-get install ruby`; for other distros, this will be different.

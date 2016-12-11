@@ -5,6 +5,9 @@ K_E = -500 #Strength of the electromagnetic force
 G = 5 #Strength of gravity
 #DRAG = 1.0 #Strength of drag (currently disabled)
 PAN = 15 #Speed of panning
+WIDTH = 1600
+HEIGHT = 900
+
 $pause = false #Sim starts unpaused
 
 $exo_72 = Gosu::Font.new(72, {:name => "assets/Exo2.ttf"}) #Font definitions
@@ -53,7 +56,7 @@ end
 
 class SimWindow < Gosu::Window
     def initialize
-        super 1280, 720 #Set the window size
+        super WIDTH, HEIGHT #Set the window size
         @particles = []
         @col_particles = []
         @set_particle = [1.0,0.0,nil,$colors["White"],[]] #Set the default particle to "Neutron"
@@ -167,34 +170,34 @@ class SimWindow < Gosu::Window
             i.draw
         end
 
-        $exo_48.draw_rel("Particle Sim", 640, 0, 0, 0.5, 0.0) #Draw middle text
-        $exo_32.draw_rel("Alpha", 640, 48, 0, 0.5, 0.0)
+        $exo_48.draw_rel("Particle Sim", WIDTH*0.5, 0, 0, 0.5, 0.0) #Draw middle text
+        $exo_32.draw_rel("Alpha", WIDTH*0.5, 48, 0, 0.5, 0.0)
 
         $exo_20.draw_rel("#{@set_name}", 0, 0, 0, 0.0, 0.0, 1.0, 1.0, @set_particle[3]) #Draw particle stats
         $exo_20.draw_rel("Mass: #{@set_particle[0]}", 0, 20, 0, 0.0, 0.0)
         $exo_20.draw_rel("Charge: #{@set_particle[1]}", 0, 40, 0, 0.0, 0.0)
 
-        $exo_20.draw_rel("- Backspace for random color", 120, 0, 0, 0.0, 0.0, 1.0, 1.0, 0xff_666666) #Draw particle controls
-        $exo_20.draw_rel("- Brackets and backslash", 120, 20, 0, 0.0, 0.0, 1.0, 1.0, 0xff_666666)
-        $exo_20.draw_rel("- Plus and minus", 120, 40, 0, 0.0, 0.0, 1.0, 1.0, 0xff_666666)
+        $exo_20.draw_rel("- Backspace for random color", WIDTH*0.1, 0, 0, 0.0, 0.0, 1.0, 1.0, 0xff_666666) #Draw particle controls
+        $exo_20.draw_rel("- Brackets and backslash", WIDTH*0.1, 20, 0, 0.0, 0.0, 1.0, 1.0, 0xff_666666)
+        $exo_20.draw_rel("- Plus and minus", WIDTH*0.1, 40, 0, 0.0, 0.0, 1.0, 1.0, 0xff_666666)
 
-        $exo_20.draw_rel("#{@particles.size} particles", 960, 0, 0, 0.5, 0.0, 1.0, 1.0, 0xff_666666) #Draw sim stats
-        $exo_20.draw_rel("#{Gosu::fps} FPS", 960, 20, 0, 0.5, 0.0, 1.0, 1.0, 0xff_666666)
+        $exo_20.draw_rel("#{@particles.size} particles", WIDTH*0.75, 0, 0, 0.5, 0.0, 1.0, 1.0, 0xff_666666) #Draw sim stats
+        $exo_20.draw_rel("#{Gosu::fps} FPS", WIDTH*0.75, 20, 0, 0.5, 0.0, 1.0, 1.0, 0xff_666666)
 
-        $exo_20.draw_rel("LMB to fire a particle", 1280, 0, 0, 1.0, 0.0) #Draw controls
-        $exo_20.draw_rel("MMB to place a particle", 1280, 20, 0, 1.0, 0.0)
-        $exo_20.draw_rel("RMB to delete a particle", 1280, 40, 0, 1.0, 0.0)
-        $exo_20.draw_rel("Space to pause", 1280, 60, 0, 1.0, 0.0)
-        $exo_20.draw_rel("1-9 to select a preset", 1280, 80, 0, 1.0, 0.0)
-        $exo_20.draw_rel("Esc to clear the screen", 1280, 100, 0, 1.0, 0.0)
-        $exo_20.draw_rel("WASD to pan around", 1280, 120, 0, 1.0, 0.0)
+        $exo_20.draw_rel("LMB to fire a particle", WIDTH, 0, 0, 1.0, 0.0) #Draw controls
+        $exo_20.draw_rel("MMB to place a particle", WIDTH, 20, 0, 1.0, 0.0)
+        $exo_20.draw_rel("RMB to delete a particle", WIDTH, 40, 0, 1.0, 0.0)
+        $exo_20.draw_rel("Space to pause", WIDTH, 60, 0, 1.0, 0.0)
+        $exo_20.draw_rel("1-9 to select a preset", WIDTH, 80, 0, 1.0, 0.0)
+        $exo_20.draw_rel("Esc to clear the screen", WIDTH, 100, 0, 1.0, 0.0)
+        $exo_20.draw_rel("WASD to pan around", WIDTH, 120, 0, 1.0, 0.0)
 
         if @target != nil #If the user is holding LMB down, draw a line to the target
             Gosu::draw_line(self.mouse_x,self.mouse_y,$colors["White"],@target[0],@target[1],$colors["White"])
         end
 
         if $pause == true #If paused, tell the user
-            $exo_72.draw_rel("PAUSED", 640, 696, 0, 0.5, 1.0)
+            $exo_72.draw_rel("PAUSED", WIDTH*0.5, HEIGHT-24, 0, 0.5, 1.0)
         end
     end
 end
